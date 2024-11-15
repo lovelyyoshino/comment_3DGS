@@ -35,17 +35,20 @@ def getWorld2View(R, t):
     Rt[3, 3] = 1.0
     return np.float32(Rt)
 
+"""
+获取世界坐标系到相机坐标系的变换矩阵
+"""
 def getWorld2View2(R, t, translate=np.array([.0, .0, .0]), scale=1.0):
     Rt = np.zeros((4, 4))
     Rt[:3, :3] = R.transpose()
     Rt[:3, 3] = t
-    Rt[3, 3] = 1.0
+    Rt[3, 3] = 1.0#旋转矩阵4*4
 
-    C2W = np.linalg.inv(Rt)
+    C2W = np.linalg.inv(Rt)#获得相机坐标系到世界坐标系的变换矩阵，即在世界坐标系下的相机的位置
     cam_center = C2W[:3, 3]
-    cam_center = (cam_center + translate) * scale
+    cam_center = (cam_center + translate) * scale#相机中心，根据缩放和平移进行变换
     C2W[:3, 3] = cam_center
-    Rt = np.linalg.inv(C2W)
+    Rt = np.linalg.inv(C2W)#获得世界坐标系到相机坐标系的变换矩阵
     return np.float32(Rt)
 
 def getProjectionMatrix(znear, zfar, fovX, fovY):
@@ -70,8 +73,14 @@ def getProjectionMatrix(znear, zfar, fovX, fovY):
     P[2, 3] = -(zfar * znear) / (zfar - znear)
     return P
 
+"""
+从视场角和像素数计算焦距
+"""
 def fov2focal(fov, pixels):
     return pixels / (2 * math.tan(fov / 2))
 
+"""
+从焦距和像素数计算视场角
+"""
 def focal2fov(focal, pixels):
     return 2*math.atan(pixels/(2*focal))
