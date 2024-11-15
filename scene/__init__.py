@@ -7,7 +7,7 @@
 # under the terms of the LICENSE.md file.
 #
 # For inquiries contact  george.drettakis@inria.fr
-#
+#这里会从sceneLoadTypeCallbacks获取colmap或者nerf的数据，然后根据数据创建高斯模型，然后会把处理好的点云，图像位置传入3dgs当中
 
 import os
 import random
